@@ -8,6 +8,12 @@ export default {
   getMovieByType(){
     return `${host2}/getMovieByType`;
   },
+  getUserRecommendMovie(){
+    return `${host2}/getUserRecommendMovie`;
+  },
+  getRecommendMovie(){
+    return `${host2}/getRecommendMovie`;
+  },
   userRegister() {
     return `${host}/user/register`;
   },

@@ -13,14 +13,22 @@
       <div>
         <span @click="redirect(3)" class="tab">
           <i style="margin-right:0.3rem" @click="redirect(3)">
-            </i>更多演员...
+            </i>更多演员
           </span>
         <span @click="redirect(4)" class="tab">
           <i style="margin-right:0.3rem" @click="redirect(4)">
-            </i>更多电影...
+            </i>更多电影
+          </span>
+        <span @click="redirect(5)" class="tab">
+          <i style="margin-right:0.3rem" @click="redirect(5)">
+            </i>电影推荐
+          </span>
+        <span @click="redirect(6)" class="tab">
+          <i style="margin-right:0.3rem" @click="redirect(6)">
+            </i>排行榜
           </span>
         <span v-if="isShow">
-          <span class="tab" @click="redirect(5)">登录</span>
+          <span class="tab" @click="redirect(7)">登录</span>
           <span class="tab"  @click="toregister">注册</span>
         </span>
         <span v-if="!isShow" class="tab" @click="logout()" >退出登录</span>
@@ -69,7 +77,11 @@ export default {
         this.$router.push({ name: 'personList' });
       } else if (num === 4) {
         this.$router.push({ name: 'movieList' });
-      } else if (num === 5) {
+      }else if (num === 5) {
+        this.$router.push({ name: 'userMovieRecommend' });
+      } else if (num === 6) {
+        this.$router.push({ name: 'topMovie' });
+      } else if (num === 7) {
         this.$router.push({ name: 'login' });
       }
     },
@@ -80,8 +92,12 @@ export default {
       if (value !== null) {
         localStorage.setItem('content', value);
       }
-      this.$router.push({ name: 'searchMovie' });
+      // this.$router.push({ name: 'searchMovie' });
       // this.$router.go(0)
+      this.$router.push({ name: 'searchMovie' }, () => {}, (e) => {
+        console.log('输出报错',e)
+        this.$router.go(0)
+      })
     },
     logout() {
       fetch

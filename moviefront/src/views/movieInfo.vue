@@ -11,10 +11,11 @@
           <p class="title">{{movie.name}}</p>
           <p>标签：{{movie.tags}}</p>
           <p>主演：{{movie.actors}}</p>
-          <p>评分：{{movie.score}}<span>|</span>投票数：{{movie.votes}}</p>
+<!--          <p>评分：{{movie.score}}<span>|</span>投票数：{{movie.votes}}</p>-->
+          <p>评分：{{movie.score}}</p>
         </div>
-        <el-button type="primary" v-if="movie.officialSite" class="moviebtn" @click="viewMovie(movie.officialSite)" plain>观看电影</el-button>
-        <el-button v-else class="moviebtn">无法观看，暂无资源</el-button>
+<!--        <el-button type="primary" v-if="movie.officialSite" class="moviebtn" @click="viewMovie(movie.officialSite)" plain>观看电影</el-button>-->
+<!--        <el-button v-else class="moviebtn">无法观看，暂无资源</el-button>-->
       </el-card>
       <el-card class="moviecard">
         <div class="movieintroduce">电影简介</div>
@@ -38,6 +39,32 @@
           <p>{{movie.storyline}}</p>
         </div>
       </el-card>
+
+
+      <el-card class="moviecard">
+      <div class="movieintroduce">喜欢这部电影的人也喜欢</div>
+      <div class="cardContain">
+      <div class="wrapper-card2">
+        <div class="card" v-for="(item, key) in movieList" :key="key">
+          <!--          引入资源防止403-->
+          <meta name="referrer" content="no-referrer"/>
+          <img :src="item.cover" class="image" @click="getMovieDetail2(item.movieId,item.cover)">
+          <div>
+            <p style="white-space: pre-wrap;">{{item.name}}    </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <el-button class="editt" @click="preMoviePage()">上一页</el-button>
+      <el-button type="primary" class="editt">{{this.movie_count}}</el-button>
+      <el-button class="editt" >{{this.movie_count+1}}</el-button>
+      <el-button class="editt" >{{this.movie_count+2}}</el-button>
+      <el-button class="editt" @click="nextMoviePage()">下一页</el-button>
+    </div>
+    </el-card>
+
+
       <el-card class="moviecard">
         <div class="movieintroduce">电影评论</div>
         <div class="newsContain">
@@ -70,6 +97,9 @@
         </div>
       </el-card>
     </div>
+
+
+
   </div>
 </template>
 
@@ -79,6 +109,9 @@ import fetch from '../api/fetch';
 export default {
   data() {
     return {
+      movieList:[],
+      movie_count:1,
+      start:false,
       movie: {},
       comment: {},
       isShow: false,
@@ -91,6 +124,7 @@ export default {
   mounted() {
     this.getMovieDetail();
     this.getCommentDetail();
+    this.getRecommendMovie();
   },
   computed: {
   },
@@ -141,11 +175,38 @@ export default {
             res.data.data['cover'] = cover;
             this.movie = res.data.data;
             console.log(this.movie);
+            this.start = true;
           }
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+    getMovieDetail2(id,cover) {
+      localStorage.setItem('movieId', id);
+      localStorage.setItem('cover', cover);
+      // this.$router.push({ name: 'movieInfo' });
+      // 重复路由
+      this.$router.go(0);
+    },
+    preMoviePage() {
+      if (this.movie_count > 1) {
+        this.movie_count = this.movie_count - 1;
+      }
+      this.getRecommendMovie();
+    },
+    nextMoviePage() {
+      this.movie_count = this.movie_count + 1;
+      this.getRecommendMovie();
+    },
+    getRecommendMovie() {
+      const mid = localStorage.getItem('movieId');
+        fetch.getRecommendMovie({
+          count: this.movie_count,
+          id: mid,
+      }).then((res) => {
+        this.movieList = JSON.parse(res.data.m_list);
+      });
     },
     getCommentDetail() {
       if (localStorage.getItem('token') !== null) {
@@ -509,4 +570,36 @@ export default {
   .editt {
     margin: 0px auto auto 0px;
   }
+
+  .wrapper-card2 {
+    width: 1000px;
+    height: 700px;
+    margin: 20px auto auto auto;
+    padding-top: 20px;
+  }
+
+  .wrapper-card2 .card {
+    color: #07111B;
+    font-size: 16px;
+    width: 230px;
+    height: 243px;
+    float: left;
+    margin: 45px;
+    border-radius: 6px;
+  }
+
+  .wrapper-card2 .card:hover {
+    transform: translateY(-5px);
+    transition: 3ms;
+    box-shadow: 5px 5px 10px #888;
+  }
+
+  .wrapper-card2 .image {
+    border-radius: 6px 6px 0 0;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+
 </style>

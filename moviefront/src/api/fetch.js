@@ -10,6 +10,12 @@ export default {
   searchMovie(req) {
     return axios.get(api.searchMovie(), { params: { count:req.count , tag: req.tags[0] } }, { headers });
   },
+  getUserRecommendMovie(req) {
+    return axios.get(api.getUserRecommendMovie(), { params: { count:req.count ,id: req.id, tags: req.tags} }, { headers });
+  },
+  getRecommendMovie(req) {
+    return axios.get(api.getRecommendMovie(), { params: { count:req.count ,id: req.id} }, { headers });
+  },
   getMovieByType(req) {
     return axios.get(api.getMovieByType(), { params: { count:req.count ,type: req.tags[0] } }, { headers });
   },

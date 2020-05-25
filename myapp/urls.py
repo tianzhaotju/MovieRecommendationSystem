@@ -29,6 +29,8 @@ urlpatterns = [
     url('userLogin/', views.user.userLogin, name = 'userLogin'),
     url('getUserInfo/', views.user.getUserInfo, name = 'getUserInfo'),
     # 电影
+    url('getUserRecommendMovie/', views.movie.getUserRecommendMovie, name = 'getUserRecommendMovie'),
+    url('getRecommendMovie/', views.movie.getRecommendMovie, name = 'getRecommendMovie'),
     url('getMovieById/', views.movie.getMovieById, name = 'getMovieById'),
     url('getMovieByName/', views.movie.getMovieByName, name = 'getMovieByName'),
     url('getMovieByType/', views.movie.getMovieByType, name = 'getMovieByType'),
