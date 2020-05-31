@@ -103,6 +103,11 @@ export default {
               this.isShow = true;
             }
             this.movie = res.data.data;
+            for(var i=0;i<this.movie.length;i++){
+              if(this.movie[i].cover=="https://ydschool-video.nosdn.127.net/1585389729635Snipaste_2020-03-28_18-02-41.png"){
+                this.movie[i].cover = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589887458475&di=38b6dbf53b6505b7a5cb3764c1857313&imgtype=0&src=http%3A%2F%2Fimg3.doubanio.com%2Fview%2Fgroup_topic%2Flarge%2Fpublic%2Fp108048762.jpg";
+              }
+            }
           }
         })
         .catch((e) => {
