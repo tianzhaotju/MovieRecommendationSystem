@@ -65,6 +65,23 @@
     </el-card>
 
 
+    <el-card class="moviecard">
+    <div class="movieintroduce">喜欢这部电影的人</div>
+    <div class="newsContain">
+      <div class="temp">
+        <div class="newsItem" v-for="(item, key) in userList" :key="key" @click="getUserRecommend(item.id)">
+          <div class="picContain" ontouchstart="this.classList.toggle('hover');">
+            <meta name="referrer" content="no-referrer"/>
+            <img :src=item.cover height="75" width="75">
+          </div>
+          <div>
+            <p style="white-space: pre-wrap;">用户名：{{item.id}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </el-card>
+
       <el-card class="moviecard">
         <div class="movieintroduce">电影评论</div>
         <div class="newsContain">
@@ -110,6 +127,7 @@ export default {
   data() {
     return {
       movieList:[],
+      userList:[],
       movie_count:1,
       start:false,
       movie: {},
@@ -125,6 +143,7 @@ export default {
     this.getMovieDetail();
     this.getCommentDetail();
     this.getRecommendMovie();
+    this.getRecommendUser();
   },
   computed: {
   },
@@ -170,12 +189,19 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             if (res.data.data === null) {
-              this.isShow = true;
+              // 没有爬到数据  this.isShow = true;
+              fetch.getMovieById({
+                movieId: movieId,
+              }).then((res) => {
+                this.movie = JSON.parse(res.data.m_list)[0];
+                this.start = true;
+              });
             }
-            res.data.data['cover'] = cover;
-            this.movie = res.data.data;
-            console.log(this.movie);
-            this.start = true;
+            else{
+              res.data.data['cover'] = cover;
+              this.movie = res.data.data;
+              this.start = true;
+            }
           }
         })
         .catch((e) => {
@@ -207,6 +233,18 @@ export default {
       }).then((res) => {
         this.movieList = JSON.parse(res.data.m_list);
       });
+    },
+    getRecommendUser() {
+      const mid = localStorage.getItem('movieId');
+        fetch.getRecommendUser({
+          id: mid,
+      }).then((res) => {
+        this.userList = res.data.u_list;
+      });
+    },
+    getUserRecommend(u_id){
+      localStorage.setItem('userId', u_id);
+      this.$router.push({ name: 'userMovie' });
     },
     getCommentDetail() {
       if (localStorage.getItem('token') !== null) {

@@ -26,11 +26,11 @@ class Movie(models.Model):
     length  = models.IntegerField(max_length=11, null=True)
     # 图像链接
     imgurl = models.CharField(max_length=100, null=True)
+
     star = models.CharField(max_length=30, null=True)
 
     class Meta:
         db_table = 'movie'
-
 
 class User(models.Model):
     """

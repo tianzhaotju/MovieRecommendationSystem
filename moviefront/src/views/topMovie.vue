@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div class="divisionx"><h3>年代</h3>
+      <el-button style="margin-top: 10px" @click="selectYear('0')" :disabled="this.years.indexOf('0')!==-1">全部年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('2010')" :disabled="this.years.indexOf('2010')!==-1">2010年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('2000')" :disabled="this.years.indexOf('2000')!==-1">2000年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('1990')" :disabled="this.years.indexOf('1990')!==-1">90年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('1980')" :disabled="this.years.indexOf('1980')!==-1">80年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('1970')" :disabled="this.years.indexOf('1970')!==-1">70年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('1960')" :disabled="this.years.indexOf('1960')!==-1">60年代</el-button>
+      <el-button style="margin-top: 10px" @click="selectYear('-1')" :disabled="this.years.indexOf('-1')!==-1">更早</el-button>
+      <el-button type="primary" style="margin-top: 10px" @click="resetYear()" plain>重置</el-button>
+    </div>
     <div>
       <el-card class="moviecard">
       <div class="movieintroduce"><strong>[{{this.Tags[this.movie_count-1][0]}}]</strong> 电影排行榜</div>
@@ -33,6 +44,7 @@ import fetch from '../api/fetch';
 export default {
   data() {
     return {
+      years:['0'],
       movieList:[],
       movie_count:1,
       Tags:[['剧情'],['战争'],['动画'],['历史'],['冒险'],['奇幻'],['传记'],['歌舞'],['动作'],['科幻'],['爱情'],['喜剧'],['惊悚'],['犯罪']],
@@ -43,6 +55,14 @@ export default {
     this.getTopMovie();
   },
   methods: {
+    selectYear(year){
+      this.years = []
+      this.years.push(year);
+      this.getTopMovie();
+    },
+    resetYear(){
+      this.years = [];
+    },
     getMovieDetail2(id,cover) {
       localStorage.setItem('movieId', id);
       localStorage.setItem('cover', cover);
@@ -63,11 +83,13 @@ export default {
       this.getTopMovie();
     },
     getTopMovie() {
-        fetch.getMovieByType({
+        fetch.getTopMovie({
         count: this.movie_count,
         tags: this.tags,
+        years:this.years,
       }).then((res) => {
         this.movieList = JSON.parse(res.data.m_list);
+        console.log(this.movieList);
       });
     },
   },

@@ -13,11 +13,23 @@ export default {
   getUserRecommendMovie(req) {
     return axios.get(api.getUserRecommendMovie(), { params: { count:req.count ,id: req.id, tags: req.tags} }, { headers });
   },
+  getUserMovie(req) {
+    return axios.get(api.getUserMovie(), { params: { count:req.count ,id: req.id} }, { headers });
+  },
   getRecommendMovie(req) {
     return axios.get(api.getRecommendMovie(), { params: { count:req.count ,id: req.id} }, { headers });
   },
+  getRecommendUser(req) {
+    return axios.get(api.getRecommendUser(), { params: {id: req.id} }, { headers });
+  },
   getMovieByType(req) {
     return axios.get(api.getMovieByType(), { params: { count:req.count ,type: req.tags[0] } }, { headers });
+  },
+  getMovieById(req) {
+    return axios.get(api.getMovieById(), { params: { id:req.movieId } }, { headers });
+  },
+  getTopMovie(req) {
+    return axios.get(api.getTopMovie(), { params: { count:req.count ,type: req.tags[0], year:req.years[0] } }, { headers });
   },
   getPerson(num) {
     return axios.get(api.getPerson(), { params: { page: num, size: 9 } }, { headers });

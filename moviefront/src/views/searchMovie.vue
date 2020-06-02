@@ -79,7 +79,9 @@ export default {
         count: this.count,
         tags: [content],
       }).then((res) => {
+        // this.movieList = JSON.parse(res.data.m_list);
         this.movieList = JSON.parse(res.data.m_list);
+        console.log(this.movieList);
       });
     },
     getMovieDetail(id,cover) {

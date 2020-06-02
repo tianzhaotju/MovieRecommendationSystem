@@ -5,9 +5,9 @@
 # npm install webpack webpack-dev-server webpack-cli --save-dev
 # npm install axios --save
 
-#启动后端
+#在根目录下，启动后端
 # python manage.py runserver 0.0.0.0:8888
 
-#启动前端
+#在moviefront目录下，启动前端
 # npm run dev
 默认端口10016

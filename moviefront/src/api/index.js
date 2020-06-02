@@ -8,11 +8,23 @@ export default {
   getMovieByType(){
     return `${host2}/getMovieByType`;
   },
+  getMovieById(){
+    return `${host2}/getMovieById`;
+  },
+  getTopMovie(){
+    return `${host2}/getTopMovie`;
+  },
   getUserRecommendMovie(){
     return `${host2}/getUserRecommendMovie`;
   },
+  getUserMovie(){
+    return `${host2}/getUserMovie`;
+  },
   getRecommendMovie(){
     return `${host2}/getRecommendMovie`;
+  },
+  getRecommendUser(){
+    return `${host2}/getRecommendUser`;
   },
   userRegister() {
     return `${host}/user/register`;

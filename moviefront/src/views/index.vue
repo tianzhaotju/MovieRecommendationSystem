@@ -150,22 +150,30 @@ export default {
     },
 
     getMovie() {
-      fetch.getMovieHigh()
-        .then((res) => {
+      fetch.getTopMovie({
+        count: 1,
+        tags: ['剧情'],
+        years:['2010'],
+      }).then((res) => {
           if (res.status === 200) {
-            if (res.data.code === 0) {
-              this.movieList = res.data.data.movieList;
+            this.movieList = [];
+            for(var i=0;i<12;i++){
+              this.movieList.push(JSON.parse(res.data.m_list)[i]);
             }
           }
         });
     },
 
     getRecommend() {
-      fetch.getRecommend()
-        .then((res) => {
+      fetch.getTopMovie({
+        count: 1,
+        tags: ['喜剧'],
+        years:['2000'],
+      }).then((res) => {
           if (res.status === 200) {
-            if (res.data.code === 0) {
-              this.recommendList = res.data.data;
+            this.recommendList = [];
+            for(var i=0;i<4;i++){
+              this.recommendList.push(JSON.parse(res.data.m_list)[i]);
             }
           }
         });

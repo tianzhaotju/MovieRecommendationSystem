@@ -1,31 +1,28 @@
 <template>
-  <!--演员资源-->
   <div>
-    <div class="division">
-      <h3>演员资源</h3>
-      <h3 style="color: #888;font-weight: 400">--- PERSONS ---</h3>
-    </div>
-    <div class="newsContain">
-      <div class="temp">
-        <!--        @click="personDetail(item.id)-->
-        <div class="newsItem" v-for="(item, key) in personList" :key="key" @click="getPersonDetail(item.id, item.name)">
-          <div class="picContain" ontouchstart="this.classList.toggle('hover');">
-            <meta name="referrer" content="no-referrer"/>
-            <img :src=item.avatar height="75" width="75">
-          </div>
+    <div>
+      <el-card class="moviecard">
+      <div class="movieintroduce">该用户喜欢看哪些电影</div>
+      <div class="cardContain">
+      <div class="wrapper-card2">
+        <div class="card" v-for="(item, key) in movieList" :key="key">
+          <!--          引入资源防止403-->
+          <meta name="referrer" content="no-referrer"/>
+          <img :src="item.cover" class="image" @click="getMovieDetail2(item.movieId,item.cover)">
           <div>
-            <p style="white-space: pre-wrap;">姓名：{{item.name}}          性别：{{item.sex}}          地点：{{item.birthPlace}}       别名：{{item.nameZn}}</p>
-            <p style="margin-top:25px">职业： {{item.profession}}</p>
+            <p style="white-space: pre-wrap;">{{item.name}}    </p>
           </div>
         </div>
       </div>
     </div>
     <div>
-      <el-button class="editt" @click="prePage()">上一页</el-button>
-      <el-button type="primary" class="editt">{{this.count}}</el-button>
-      <el-button class="editt" >{{this.count+1}}</el-button>
-      <el-button class="editt" >{{this.count+2}}</el-button>
-      <el-button class="editt" @click="nextPage()">下一页</el-button>
+      <el-button class="editt" @click="preMoviePage()">上一页</el-button>
+      <el-button type="primary" class="editt">{{this.movie_count}}</el-button>
+      <el-button class="editt" >{{this.movie_count+1}}</el-button>
+      <el-button class="editt" >{{this.movie_count+2}}</el-button>
+      <el-button class="editt" @click="nextMoviePage()">下一页</el-button>
+    </div>
+    </el-card>
     </div>
   </div>
 </template>
@@ -36,49 +33,38 @@ import fetch from '../api/fetch';
 export default {
   data() {
     return {
-      personList: [],
-      count: 1,
-      isShow: false,
+      movieList:[],
+      movie_count:1,
     };
   },
   mounted() {
-    this.getPerson();
-  },
-  computed: {
-    isLogin() {
-      return !!localStorage.getItem('token');
-    },
+    this.getUserRecommendMovie();
   },
   methods: {
-    prePage() {
-      if (this.count > 1) {
-        this.count = this.count - 1;
+    getMovieDetail2(id,cover) {
+      localStorage.setItem('movieId', id);
+      localStorage.setItem('cover', cover);
+      this.$router.push({ name: 'movieInfo' });
+    },
+    preMoviePage() {
+      if (this.movie_count > 1) {
+        this.movie_count = this.movie_count - 1;
       }
-      this.getPerson();
+      this.getUserRecommendMovie();
     },
-    nextPage() {
-      this.count = this.count + 1;
-      this.getPerson();
+    nextMoviePage() {
+      this.movie_count = this.movie_count + 1;
+      this.getUserRecommendMovie();
     },
-    getPerson() {
-      fetch.getPerson(this.count)
-        .then((res) => {
-          if (res.status === 200) {
-            if (res.data.code === 0) {
-              this.personList = res.data.data.personList;
-              for(var i=0;i<this.personList.length;i++){
-              if(this.personList[i].avatar=="https://ydschool-video.nosdn.127.net/1585389729635Snipaste_2020-03-28_18-02-41.png"){
-                this.personList[i].avatar = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589887458475&di=38b6dbf53b6505b7a5cb3764c1857313&imgtype=0&src=http%3A%2F%2Fimg3.doubanio.com%2Fview%2Fgroup_topic%2Flarge%2Fpublic%2Fp108048762.jpg";
-              }
-            }
-            }
-          }
-        });
-    },
-    getPersonDetail(id, name) {
-      localStorage.setItem('personId', id);
-      localStorage.setItem('personName', name);
-      this.$router.push({ name: 'personInfo' });
+    getUserRecommendMovie() {
+      const uid = localStorage.getItem('userId');
+      fetch.getUserMovie({
+        count: this.movie_count,
+        id: uid
+      }).then((res) => {
+        this.movieList = JSON.parse(res.data.m_list);
+        console.log(this.movieList);
+      });
     },
   },
 };
@@ -86,29 +72,90 @@ export default {
 
 
 <style>
-  @import "../assets/Animate/animate.min.css";
-
   * {
     box-sizing: border-box;
   }
 
   body {
-    background: #ededed;
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 
-  .myMenu {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  div .moviecard {
+    width: 1000px;
+    margin: 20px auto auto auto;
   }
 
-  .indexContain {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #ededed;
-    background: #fff;
+  .avatar {
+    float: left;
+    width: 126px;
+    height: 140px;
+  }
+
+  .title {
+    font-size: 21px;
+  }
+
+  .introduce {
+    margin-left: 140px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .movieintroducet {
+    /*margin-left: 0px;*/
+    margin: 15px auto 15px auto;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .movieintroducet p {
+    margin: 5px;
+  }
+
+  .introduce p {
+    margin: 8px;
+  }
+
+  p span {
+    margin: 14px;
+  }
+
+  .movieintroduce {
+    border-left: 5px solid #888;
+    text-align: left;
+    padding-left: 8px;
+  }
+
+  .moviecontent {
+    height: 100px;
+    margin: 15px auto 15px auto;
+    text-align: left;
+  }
+
+
+  .moviebtn {
+    float: right;
+    margin-bottom: 20px;
+  }
+
+  .combtn {
+    float: left;
+    margin-bottom: 20px;
+  }
+
+  .combtn2 {
+    float: left;
+    margin-top: 5px;
+    margin-bottom: 20px;
+  }
+
+  .scorec {
+    margin: 0px auto auto 0px;
   }
 
   .cardContain {
@@ -147,7 +194,7 @@ export default {
   .newsItem {
     display: flex;
     justify-content: flex-start;
-    width: 1200px;
+    width: 1000px;
     margin: auto;
     height: 114px;
     text-align: left;
@@ -257,10 +304,10 @@ export default {
     border-radius: 6px;
   }
 
-  .division {
-    width: 100%;
+  .divisionx {
+    width: 90%;
     margin: 10px auto;
-    text-align: center;
+    text-align: left;
     padding-left: 10px;
     color: #5a5a5a;
   }
@@ -306,6 +353,37 @@ export default {
 
   .editt {
     margin: 0px auto auto 0px;
+  }
+
+  .wrapper-card2 {
+    width: 1000px;
+    height: 700px;
+    margin: 20px auto auto auto;
+    padding-top: 20px;
+  }
+
+  .wrapper-card2 .card {
+    color: #07111B;
+    font-size: 16px;
+    width: 230px;
+    height: 243px;
+    float: left;
+    margin: 45px;
+    border-radius: 6px;
+  }
+
+  .wrapper-card2 .card:hover {
+    transform: translateY(-5px);
+    transition: 3ms;
+    box-shadow: 5px 5px 10px #888;
+  }
+
+  .wrapper-card2 .image {
+    border-radius: 6px 6px 0 0;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 6px;
   }
 
 </style>

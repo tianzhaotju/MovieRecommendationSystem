@@ -88,6 +88,7 @@ export default {
           tags:tags
       }).then((res) => {
         this.movieList = JSON.parse(res.data.m_list);
+        console.log(this.movieList);
       });
     },
   },

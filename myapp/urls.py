@@ -28,12 +28,15 @@ urlpatterns = [
     url('userRegister/', views.user.userRegister, name = 'userRegister'),
     url('userLogin/', views.user.userLogin, name = 'userLogin'),
     url('getUserInfo/', views.user.getUserInfo, name = 'getUserInfo'),
+    url('getUserMovie/', views.user.getUserMovie, name = 'getUserMovie'),
     # 电影
     url('getUserRecommendMovie/', views.movie.getUserRecommendMovie, name = 'getUserRecommendMovie'),
     url('getRecommendMovie/', views.movie.getRecommendMovie, name = 'getRecommendMovie'),
+    url('getRecommendUser/', views.movie.getRecommendUser, name = 'getRecommendUser'),
     url('getMovieById/', views.movie.getMovieById, name = 'getMovieById'),
     url('getMovieByName/', views.movie.getMovieByName, name = 'getMovieByName'),
     url('getMovieByType/', views.movie.getMovieByType, name = 'getMovieByType'),
+    url('getTopMovie/', views.movie.getTopMovie, name = 'getTopMovie'),
     url('searchMovie/', views.movie.searchMovie, name = 'searchMovie'),
     # 评论
     url('getCommentById/', views.comment.getCommentById, name = 'getCommentById'),

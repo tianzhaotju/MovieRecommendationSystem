@@ -24,6 +24,7 @@ const searchMovie = resolve => require(['../views/searchMovie.vue'], resolve);
 // eslint-disable-next-line global-require,import/no-dynamic-require
 const personList = resolve => require(['../views/personList.vue'], resolve);
 const userMovieRecommend = resolve => require(['../views/userMovieRecommend.vue'], resolve);
+const userMovie = resolve => require(['../views/userMovie.vue'], resolve);
 const topMovie = resolve => require(['../views/topMovie.vue'], resolve);
 
 const router = new Router({
@@ -80,6 +81,17 @@ const router = new Router({
           path: '/',
           name: 'movieList',
           component: movieList,
+        },
+      ],
+    },
+    {
+      path: '/userMovie',
+      component: CommonPage,
+      children: [
+        {
+          path: '/',
+          name: 'userMovie',
+          component: userMovie,
         },
       ],
     },
