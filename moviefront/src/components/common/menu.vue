@@ -4,6 +4,10 @@
       <div>
         <span @click="redirect(1)" class="tab">首页</span>
         <span @click="redirect(2)" class="tab" v-if="!isShow">个人中心</span>
+        <span @click="redirect(8)" class="tab">
+          <i style="margin-right:0.3rem" @click="redirect(8)">
+            </i>可视化分析
+          </span>
         <span class="tab">
           <el-input placeholder="搜索电影" style="width:18rem" v-model="content" @change="searchMovie(content)">
             <i slot="suffix" class="el-input__icon el-icon-search"></i>
@@ -31,7 +35,7 @@
           <span class="tab" @click="redirect(7)">登录</span>
           <span class="tab"  @click="toregister">注册</span>
         </span>
-        <span v-if="!isShow" class="tab" @click="logout()" >退出登录</span>
+        <span v-if="!isShow" class="tab" @click="logout()" >退出</span>
       </div>
     </div>
   </header>
@@ -83,6 +87,8 @@ export default {
         this.$router.push({ name: 'topMovie' });
       } else if (num === 7) {
         this.$router.push({ name: 'login' });
+      } else if (num === 8){
+        this.$router.push({ name: 'visualization'})
       }
     },
     toregister() {
@@ -137,7 +143,7 @@ export default {
   .contain {
     display: flex;
     justify-content: space-between;
-    width: 1000px;
+    width: 1100px;
     margin: auto;
     line-height: 60px;
     font-weight: 500;

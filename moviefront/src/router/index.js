@@ -26,6 +26,7 @@ const personList = resolve => require(['../views/personList.vue'], resolve);
 const userMovieRecommend = resolve => require(['../views/userMovieRecommend.vue'], resolve);
 const userMovie = resolve => require(['../views/userMovie.vue'], resolve);
 const topMovie = resolve => require(['../views/topMovie.vue'], resolve);
+const visualization = resolve => require(['../views/visualization.vue'], resolve);
 
 const router = new Router({
   routes: [
@@ -37,6 +38,17 @@ const router = new Router({
           path: '/',
           name: 'index',
           component: index,
+        },
+      ],
+    },
+    {
+      path: '/visualization',
+      component: CommonPage,
+      children: [
+        {
+          path: '/',
+          name: 'visualization',
+          component: visualization,
         },
       ],
     },

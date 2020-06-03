@@ -4,6 +4,7 @@
 # pip install django-cors-headers
 # npm install webpack webpack-dev-server webpack-cli --save-dev
 # npm install axios --save
+# npm install echarts --save
 
 #在根目录下，启动后端
 # python manage.py runserver 0.0.0.0:8888

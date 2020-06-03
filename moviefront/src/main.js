@@ -11,6 +11,9 @@ import store from './store/store';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/main.css';
 import './assets/ele-custom-theme/index.css';
+// echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 Vue.use(ElementUI);
 Vue.config.productionTip = true;
