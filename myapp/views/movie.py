@@ -459,6 +459,31 @@ def getRecommendUser(request):
     conn.close()
     return JsonResponse({'code':1,'u_list':u_list})
 
+def updateMovieScore(request):
+    print("############################")
+    print("updateMovie")
+    m_id = request.POST.get('id','')
+    votes = request.POST.get('votes','')
+    score = request.POST.get('score','')
+    # 建立数据库连接
+    conn = pymysql.connect(
+        host='127.0.0.1',
+        port=3306,
+        user='root',
+        password='tian',
+        db='rec_movie',
+        charset='utf8'
+    )
+    cursor = conn.cursor()
+    sql1 = 'UPDATE movie SET rate= %s WHERE m_id = %s'
+    rows = cursor.execute(sql1,(score*10, m_id))
+    print(rows)
+    # 关闭游标
+    cursor.close()
+    # 关闭连接
+    conn.close()
+    return JsonResponse({'code':1})
+
 def exist_movie(m_id):
     m_list = Movie.objects.filter(m_id=m_id)
     if len(m_list) != 0:

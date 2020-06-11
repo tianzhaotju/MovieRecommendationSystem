@@ -1,22 +1,118 @@
 <template>
   <div class="Echarts">
-    <div id="type" style="width: 1100px;height:400px;"></div>
-    <div id="language" style="width: 1100px;height:400px;"></div>
-    <div id="district" style="width: 1100px;height:400px;"></div>
-    <div id="year" style="width: 1100px;height:400px;"></div>
-    <div id="length" style="width: 1100px;height:400px;"></div>
-    <div id="basic" style="width: 1100px;height:400px;"></div>
+    <div class="divisionx"><h3>选择图表</h3>
+      <el-button style="margin-top: 10px" @click="selectTag('1')" :disabled="this.isShow=='1'">类型</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('2')" :disabled="this.isShow=='2'">语言</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('3')" :disabled="this.isShow=='3'">发行地</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('4')" :disabled="this.isShow=='4'">年份</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('5')" :disabled="this.isShow=='5'">时长</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('6')" :disabled="this.isShow=='6'">评分</el-button>
+      <el-button style="margin-top: 10px" @click="selectTag('7')" :disabled="this.isShow=='7'">实时推荐</el-button>
+    </div>
+    <div id="oo" style="width: 1100px;height:400px;"></div>
   </div>
 </template>
 
 <script>
 import world from 'echarts/map/json/world.json'
+import fetch from "../api/fetch";
+import movieList from "./movieList";
 export default {
+  data() {
+    return {
+      isShow: '0',
+      m_name:['盗梦空间', '千与千寻', '摔跤吧！爸爸', '海上钢琴师', '素媛'],
+      m_hot:[1, 2, 3, 4, 5],
+    };
+  },
+  mounted() {
+    this.top5();
+  },
   name: 'Echarts',
   methods:{
+    selectTag(tag) {
+      this.isShow = tag;
+      if(tag == '1'){
+        this.myTypes();
+      }else if(tag == '2'){
+        this.myLanguages();
+      }else if(tag == '3'){
+        this.myDistricts();
+      }else if(tag == '4'){
+        this.myYears();
+      }else if(tag == '5'){
+        this.myLengths();
+      }else if(tag == '6'){
+        this.myBasics();
+      }else if(tag == '7'){
+        this.top5();
+        this.myTop5();
+      }
+    },
+    top5(){
+      console.log(1111111);
+        fetch.top5({
+        num:5,
+      }).then((res) => {
+        var movieList = res.data.finalresult;
+        for(var i=movieList.length-1;i>=0;i--){
+          this.m_name[5-i-1] = movieList[i].mname;
+          this.m_hot[5-i-1] = movieList[i].hot;
+        }
+      });
+    },
+    myTop5(){
+		  // 基于准备好的dom，初始化echarts实例
+		  var myTop5 = this.$echarts.init(document.getElementById('oo'));
+		  myTop5.clear();
+		  // 指定图表的配置项和数据
+		  var option = {
+		    title: {
+          text: '实时推荐Top5电影',
+          subtext: '数据来自Peiyi Zhang的实时推荐模块'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        legend: {
+          data: ['热度']
+        },
+        grid: {
+		      top: '20%',
+          left: '8%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          type: 'category',
+          data: this.m_name,
+          axisLabel:{
+            textStyle:{
+              fontSize:18,
+            }
+          }
+        },
+        series: [{
+            name: '热度',
+            type: 'bar',
+            data: this.m_hot
+        }]
+      };
+		  // 使用刚指定的配置项和数据显示图表。
+		  myTop5.setOption(option);
+    },
     myTypes(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myType = this.$echarts.init(document.getElementById('type'));
+		  var myType = this.$echarts.init(document.getElementById('oo'));
+		  myType.clear();
 		  // 指定图表的配置项和数据
 		  var option = {
                 title: {
@@ -91,7 +187,8 @@ export default {
 		  },
     myLanguages(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myLanguage = this.$echarts.init(document.getElementById('language'));
+		  var myLanguage = this.$echarts.init(document.getElementById('oo'));
+		  myLanguage.clear();
 		  // 指定图表的配置项和数据
 		  var option = option = {
                 title: {
@@ -166,7 +263,8 @@ export default {
 		  },
     myDistricts(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myDistrict = this.$echarts.init(document.getElementById('district'));
+		  var myDistrict = this.$echarts.init(document.getElementById('oo'));
+		  myDistrict.clear();
 		  this.$echarts.registerMap('world',world);
 		  // 指定图表的配置项和数据
 		  var option = {
@@ -405,7 +503,8 @@ export default {
 		  },
     myYears(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myYear = this.$echarts.init(document.getElementById('year'));
+		  var myYear = this.$echarts.init(document.getElementById('oo'));
+		  myYear.clear();
 		  // 指定图表的配置项和数据
 		  var option = {
                 title: {
@@ -536,7 +635,8 @@ export default {
 		  },
     myLengths(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myLength = this.$echarts.init(document.getElementById('length'));
+		  var myLength = this.$echarts.init(document.getElementById('oo'));
+		  myLength.clear();
 		  // 指定图表的配置项和数据
 		  var option = {
                 title: {
@@ -738,7 +838,8 @@ export default {
 		  },
     myBasics(){
 		  // 基于准备好的dom，初始化echarts实例
-		  var myBasic = this.$echarts.init(document.getElementById('basic'));
+		  var myBasic = this.$echarts.init(document.getElementById('oo'));
+		  myBasic.clear();
 		  // 指定图表的配置项和数据
 		  var option = {
                 title: {
@@ -833,14 +934,14 @@ export default {
 		  myBasic.setOption(option);
 		  },
   },
-  mounted() {
-  	this.myTypes();
-  	this.myLanguages();
-  	this.myDistricts();
-  	this.myYears();
-  	this.myLengths();
-  	this.myBasics();
-  }
+  // mounted() {
+  // 	this.myTypes();
+  // 	this.myLanguages();
+  // 	this.myDistricts();
+  // 	this.myYears();
+  // 	this.myLengths();
+  // 	this.myBasics();
+  // }
 }
 </script>
 

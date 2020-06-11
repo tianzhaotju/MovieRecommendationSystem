@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from django.views.generic import TemplateView
-from myapp.views import comment,test,movie,rating,recommendMovie,user
+from myapp.views import comment,test,movie,rating,recommendMovie,user,realTime
 from myapp import views
 from django.http import HttpResponse
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     url('getMovieByType/', views.movie.getMovieByType, name = 'getMovieByType'),
     url('getTopMovie/', views.movie.getTopMovie, name = 'getTopMovie'),
     url('searchMovie/', views.movie.searchMovie, name = 'searchMovie'),
+    url('updateMovieScore/', views.movie.updateMovieScore, name = 'updateMovieScore'),
     # 评论
     url('getCommentById/', views.comment.getCommentById, name = 'getCommentById'),
     url('getCommentByMid/', views.comment.getCommentByMid, name = 'getCommentByMid'),
@@ -50,5 +51,6 @@ urlpatterns = [
     url('getRatingByUid/', views.rating.getRatingByUid, name = 'getRatingByUid'),
     url('getRatingByUidAndMid/', views.rating.getRatingByUidAndMid, name = 'getRatingByUidAndMid'),
     url('addRating/', views.rating.addRating, name = 'addRating'),
-
+    # 实时
+    url('top5/', views.realTime.top5, name='top5'),
 ]

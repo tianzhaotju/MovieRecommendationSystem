@@ -152,25 +152,41 @@ export default {
       this.hasSet = true;
       const user = JSON.parse(localStorage.getItem('user'));
       this.movie.score = (score + this.movie.score*votes) / (votes+1);
+      // fetch
+      //   .putMovie({
+      //     movieId: this.movie.movieId,
+      //     userId: user.id,
+      //   })
+      //   .then((res) => {
+      //     if (res.code === 0) {
+      //       // this.getMovieDetail();
+      //     } else if (res.code === 500) {
+      //       this.$message({
+      //         message: '请先登录',
+      //         type: 'warning',
+      //       });
+      //     }
+      //   })
+      //   .catch((e) => {
+      //     // console.log(e);
+      //     console.log('Warning!');
+      //   });
+      this.movie.votes = votes+1;
+
       fetch
-        .putMovie({
-          movieId: this.movie.movieId,
-          userId: user.id,
-        })
-        .then((res) => {
-          if (res.code === 0) {
-            // this.getMovieDetail();
-          } else if (res.code === 500) {
-            this.$message({
-              message: '请先登录',
-              type: 'warning',
-            });
-          }
+        .updateMovieScore({
+          id: this.movie.movieId,
+          votes: this.movie.votes,
+          score: this.movie.score,
         })
         .catch((e) => {
           console.log(e);
+          this.$message({
+              message: '请先登录',
+              type: 'warning',
+            });
         });
-      this.movie.votes = votes+1;
+
     },
     prePage() {
       if (this.count > 1) {
@@ -194,6 +210,7 @@ export default {
                 movieId: movieId,
               }).then((res) => {
                 this.movie = JSON.parse(res.data.m_list)[0];
+                console.log(this.movie);
                 this.start = true;
               });
             }

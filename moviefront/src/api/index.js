@@ -1,7 +1,11 @@
 const host = 'http://movie.pqdong.com:10015';
 const host2 = 'http://localhost:8888'
+const host3 = 'http://26335nw774.qicp.vip'
 
 export default {
+  top5(){
+    return `${host2}/top5`;
+  },
   searchMovie(){
     return `${host2}/searchMovie`;
   },
@@ -13,6 +17,9 @@ export default {
   },
   getTopMovie(){
     return `${host2}/getTopMovie`;
+  },
+  updateMovieScore(){
+    return `${host2}/updateMovieScore`;
   },
   getUserRecommendMovie(){
     return `${host2}/getUserRecommendMovie`;

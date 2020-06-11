@@ -7,6 +7,9 @@ const headers = {
   token: localStorage.getItem('token'),
 };
 export default {
+  top5(req) {
+    return axios.get(api.top5(), { params: {num:req.num} }, { headers });
+  },
   searchMovie(req) {
     return axios.get(api.searchMovie(), { params: { count:req.count , tag: req.tags[0] } }, { headers });
   },
@@ -30,6 +33,9 @@ export default {
   },
   getTopMovie(req) {
     return axios.get(api.getTopMovie(), { params: { count:req.count ,type: req.tags[0], year:req.years[0] } }, { headers });
+  },
+  updateMovieScore(req) {
+    return axios.get(api.updateMovieScore(), { params: { id:req.id ,votes: req.votes, score:req.score } }, { headers });
   },
   getPerson(num) {
     return axios.get(api.getPerson(), { params: { page: num, size: 9 } }, { headers });
